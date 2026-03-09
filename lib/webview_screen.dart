@@ -17,6 +17,7 @@ class _WebViewScreenState extends State<WebViewScreen>
   late WebViewController _webController;
 
   bool _isLoading = true;
+  bool _isFirstLoad = true;
   bool _hasError = false;
   double _progress = 0;
   String _currentUrl = _homeUrl;
@@ -130,6 +131,9 @@ class _WebViewScreenState extends State<WebViewScreen>
               _isLoading = false;
               _progress = 1.0;
               _currentUrl = url;
+              if (_isFirstLoad) {
+                _isFirstLoad = false;
+              }
             });
             _injectViewportMeta();
           },
@@ -336,22 +340,8 @@ class _WebViewScreenState extends State<WebViewScreen>
   Widget _buildWebView() {
     return Stack(
       children: [
-        RefreshIndicator(
-          onRefresh: _refresh,
-          color: _primaryGreen,
-          backgroundColor: Colors.white,
-          strokeWidth: 2.5,
-          displacement: 50,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top - 3,
-              child: WebViewWidget(controller: _webController),
-            ),
-          ),
-        ),
-        if (_isLoading) _buildLoadingOverlay(),
+        WebViewWidget(controller: _webController),
+        if (_isLoading && _isFirstLoad) _buildLoadingOverlay(),
       ],
     );
   }
