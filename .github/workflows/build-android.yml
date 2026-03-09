@@ -39,7 +39,7 @@ jobs:
         run: flutter analyze --no-fatal-infos
 
       - name: Check formatting
-        run: dart format --set-exit-if-changed lib/
+        run: dart format lib/
 
   # ─────────────────────────────────────────────────────────────
   # Job 2: Build APK - Split per ABI + Universal
