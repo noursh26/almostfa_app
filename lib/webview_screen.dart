@@ -298,7 +298,7 @@ class _WebViewScreenState extends State<WebViewScreen>
       child: _isLoading && _progress < 1.0
           ? Stack(
               children: [
-                Container(color: _lightGreen.withValues(alpha: 0.3)),
+                Container(color: _lightGreen.withOpacity(0.3)),
                 FractionallySizedBox(
                   widthFactor: _progress,
                   child: Container(
@@ -319,7 +319,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                         gradient: LinearGradient(
                           colors: [
                             Colors.transparent,
-                            Colors.white.withValues(alpha: 0.4),
+                            Colors.white.withOpacity(0.4),
                             Colors.transparent,
                           ],
                         ),
@@ -377,8 +377,8 @@ class _WebViewScreenState extends State<WebViewScreen>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        _accentGreen.withValues(alpha: 0.15),
-                        _lightGreen.withValues(alpha: 0.05),
+                        _accentGreen.withOpacity(0.15),
+                        _lightGreen.withOpacity(0.05),
                         Colors.transparent,
                       ],
                       stops: const [0.3, 0.7, 1.0],
@@ -442,7 +442,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: _accentGreen.withValues(alpha: 0.4),
+                                color: _accentGreen.withOpacity(0.4),
                                 blurRadius: 4,
                               ),
                             ],
@@ -459,7 +459,7 @@ class _WebViewScreenState extends State<WebViewScreen>
               Text(
                 '${(_progress * 100).toInt()}%',
                 style: TextStyle(
-                  color: _primaryGreen.withValues(alpha: 0.6),
+                  color: _primaryGreen.withOpacity(0.6),
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),
@@ -508,7 +508,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                     color: _lightGreen,
                     boxShadow: [
                       BoxShadow(
-                        color: _primaryGreen.withValues(alpha: 0.1),
+                        color: _primaryGreen.withOpacity(0.1),
                         blurRadius: 24,
                         spreadRadius: 6,
                       ),
@@ -555,7 +555,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                     'رمز الخطأ: $_errorCode',
                     style: TextStyle(
                       fontSize: 12,
-                      color: _primaryGreen.withValues(alpha: 0.7),
+                      color: _primaryGreen.withOpacity(0.7),
                     ),
                   ),
                 ),
@@ -580,7 +580,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                       borderRadius: BorderRadius.circular(16),
                     ),
                     elevation: 4,
-                    shadowColor: _primaryGreen.withValues(alpha: 0.4),
+                    shadowColor: _primaryGreen.withOpacity(0.4),
                   ),
                 ),
               ),
@@ -603,7 +603,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                       borderRadius: BorderRadius.circular(16),
                     ),
                     side: BorderSide(
-                        color: _primaryGreen.withValues(alpha: 0.3), width: 1.5),
+                        color: _primaryGreen.withOpacity(0.3), width: 1.5),
                   ),
                 ),
               ),
