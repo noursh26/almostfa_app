@@ -1,0 +1,177 @@
+name: Android Build & Release
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+  JAVA_VERSION: '17'
+
+jobs:
+  # ─────────────────────────────────────
+  # Analyze & Test
+  # ─────────────────────────────────────
+  analyze:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Analyze code
+        run: flutter analyze --no-fatal-infos
+
+  # ─────────────────────────────────────
+  # Build Debug APK
+  # ─────────────────────────────────────
+  build-debug:
+    name: Build Debug APK
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Debug APK
+        run: flutter build apk --debug --no-tree-shake-icons
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
+
+  # ─────────────────────────────────────
+  # Build Release APK & AAB
+  # ─────────────────────────────────────
+  build-release:
+    name: Build Release
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Release APK
+        run: flutter build apk --release --no-tree-shake-icons
+
+      - name: Build Release AAB (App Bundle)
+        run: flutter build appbundle --release --no-tree-shake-icons
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+
+      - name: Upload Release AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+  # ─────────────────────────────────────
+  # Create GitHub Release (on tag push)
+  # ─────────────────────────────────────
+  release:
+    name: Create Release
+    needs: build-release
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: Download Release APK
+        uses: actions/download-artifact@v4
+        with:
+          name: release-apk
+          path: ./artifacts/
+
+      - name: Download Release AAB
+        uses: actions/download-artifact@v4
+        with:
+          name: release-aab
+          path: ./artifacts/
+
+      - name: Rename artifacts
+        run: |
+          mv ./artifacts/app-release.apk ./artifacts/almostfa-${{ github.ref_name }}.apk
+          mv ./artifacts/app-release.aab ./artifacts/almostfa-${{ github.ref_name }}.aab
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "المصطفى ${{ github.ref_name }}"
+          body: |
+            ## تطبيق المصطفى ${{ github.ref_name }}
+            
+            ### التحميل:
+            - **APK**: للتثبيت المباشر على أندرويد
+            - **AAB**: للنشر على Google Play Store
+            
+            ### التثبيت:
+            1. حمّل ملف APK
+            2. فعّل "مصادر غير معروفة" في إعدادات الجهاز
+            3. افتح الملف وثبّت التطبيق
+          files: |
+            ./artifacts/almostfa-${{ github.ref_name }}.apk
+            ./artifacts/almostfa-${{ github.ref_name }}.aab
+          draft: false
+          prerelease: false

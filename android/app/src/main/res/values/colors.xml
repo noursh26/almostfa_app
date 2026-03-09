@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launch_background">#074424</color>
+    <color name="primary_green">#0F6B3C</color>
+    <color name="accent_green">#1DB954</color>
+    <color name="dark_green">#074424</color>
+    <color name="light_green">#E8F5EE</color>
+    <color name="ic_launcher_background">#074424</color>
+    <color name="status_bar_color">#00000000</color>
+    <color name="navigation_bar_color">#074424</color>
+</resources>
