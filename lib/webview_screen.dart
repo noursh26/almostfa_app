@@ -368,19 +368,17 @@ class _WebViewScreenState extends State<WebViewScreen>
         if (!didPop) _handleBackButton();
       },
       child: Scaffold(
-        backgroundColor: _darkGreen,
-        body: Column(
+        backgroundColor: Colors.white,
+        body: Stack(
           children: [
-            _buildHeader(),
-            _buildProgressBar(),
-            Expanded(
+            Positioned.fill(
               child: _hasError || !_isConnected
                   ? _buildErrorState()
                   : _buildWebView(),
             ),
+            Positioned.fill(child: _buildLoadingOverlay()),
           ],
         ),
-        bottomNavigationBar: _buildBottomNav(),
       ),
     );
   }
@@ -625,18 +623,13 @@ class _WebViewScreenState extends State<WebViewScreen>
   // WebView
   // ───────────────────────────────────────
   Widget _buildWebView() {
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: _refresh,
-          color: _primaryGreen,
-          backgroundColor: Colors.white,
-          strokeWidth: 2.5,
-          displacement: 50,
-          child: WebViewWidget(controller: _webController),
-        ),
-        if (_isLoading) _buildLoadingOverlay(),
-      ],
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      color: _primaryGreen,
+      backgroundColor: Colors.white,
+      strokeWidth: 2.5,
+      displacement: 50,
+      child: WebViewWidget(controller: _webController),
     );
   }
 
