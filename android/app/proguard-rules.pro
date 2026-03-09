@@ -19,5 +19,9 @@
 ## Connectivity
 -keep class androidx.core.app.** { *; }
 
+## Play Core (deferred components / split install)
+-keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
+
 ## Keep annotations
 -keepattributes *Annotation*
