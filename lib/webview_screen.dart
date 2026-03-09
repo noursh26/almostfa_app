@@ -684,10 +684,10 @@ class _WebViewScreenState extends State<WebViewScreen>
               const SizedBox(height: 28),
 
               // Loading text
-              const Text(
+              Text(
                 'جاري التحميل...',
                 style: TextStyle(
-                  color: Colors.black87,
+                  color: _primaryGreen,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.3,
@@ -696,12 +696,12 @@ class _WebViewScreenState extends State<WebViewScreen>
 
               const SizedBox(height: 6),
 
-              const Text(
+              Text(
                 _currentUrl
                     .replaceAll('https://', '')
                     .replaceAll('http://', ''),
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: Colors.grey[400],
                   fontSize: 11,
                 ),
                 maxLines: 1,
