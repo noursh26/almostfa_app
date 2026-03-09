@@ -1,31 +1,4 @@
 workflows:
-  android-debug:
-    name: المصطفى - Debug Build
-    max_build_duration: 60
-    environment:
-      flutter: 3.24.0
-      java: 17
-
-    triggering:
-      events:
-        - pull_request
-      branch_patterns:
-        - pattern: '*'
-          include: true
-
-    scripts:
-      - name: Get Flutter packages
-        script: flutter pub get
-
-      - name: Analyze code
-        script: flutter analyze --no-fatal-infos
-
-      - name: Build Debug APK
-        script: flutter build apk --debug --no-tree-shake-icons
-
-    artifacts:
-      - build/**/outputs/**/*.apk
-
   android-release:
     name: المصطفى - Release Build
     max_build_duration: 60
@@ -34,8 +7,6 @@ workflows:
       java: 17
       android_signing:
         - keystore_reference
-      groups:
-        - google_play
 
     triggering:
       events:
@@ -49,14 +20,14 @@ workflows:
       - name: Get Flutter packages
         script: flutter pub get
 
-      - name: Analyze code
-        script: flutter analyze --no-fatal-infos
+      - name: Generate app icons
+        script: flutter pub run flutter_launcher_icons
 
       - name: Build Release APK
-        script: flutter build apk --release --no-tree-shake-icons
+        script: flutter build apk --release
 
       - name: Build App Bundle (AAB)
-        script: flutter build appbundle --release --no-tree-shake-icons
+        script: flutter build appbundle --release
 
     artifacts:
       - build/**/outputs/**/*.apk

@@ -44,8 +44,10 @@ app.*.map.json
 
 # Android
 **/android/**/gradle-wrapper.jar
-**/android/.gradle
+.gradle/
 **/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
@@ -55,6 +57,3 @@ app.*.map.json
 # Generated files
 *.g.dart
 *.freezed.dart
-
-# Coverage
-coverage/
