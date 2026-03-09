@@ -364,7 +364,7 @@ class _WebViewScreenState extends State<WebViewScreen>
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _handleBackButton();
       },
       child: Scaffold(
@@ -523,12 +523,12 @@ class _WebViewScreenState extends State<WebViewScreen>
               _buildHeaderButton(
                 onTap: _refresh,
                 child: _isLoading
-                    ? SizedBox(
+                    ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: _accentGreen,
+                          color: Colors.white70,
                         ),
                       )
                     : const Icon(
@@ -684,10 +684,10 @@ class _WebViewScreenState extends State<WebViewScreen>
               const SizedBox(height: 28),
 
               // Loading text
-              Text(
+              const Text(
                 'جاري التحميل...',
                 style: TextStyle(
-                  color: _primaryGreen,
+                  color: Colors.black87,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.3,
@@ -696,12 +696,12 @@ class _WebViewScreenState extends State<WebViewScreen>
 
               const SizedBox(height: 6),
 
-              Text(
+              const Text(
                 _currentUrl
                     .replaceAll('https://', '')
                     .replaceAll('http://', ''),
                 style: TextStyle(
-                  color: Colors.grey[400],
+                  color: Colors.black54,
                   fontSize: 11,
                 ),
                 maxLines: 1,
@@ -1013,7 +1013,7 @@ class _WebViewScreenState extends State<WebViewScreen>
                     ? (isHome
                         ? _accentGreen.withOpacity(0.9)
                         : Colors.white54)
-                    : Colors.white20,
+                    : Colors.white24,
                 fontSize: 9,
                 fontWeight: isHome ? FontWeight.w600 : FontWeight.normal,
               ),
